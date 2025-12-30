@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express } from "express";
 import fs from "fs";
 import path from "path";
 import cors from "cors";
@@ -9,7 +9,7 @@ import swaggerDocument from "../openapi.json" with { type: "json" };
 
 
 
-const app = express();
+const app: Express = express();
 app.use(cors());
 
 app.use(express.json());
@@ -29,3 +29,5 @@ app.use(API_PREFIX, router);
 app.listen(SERVER_PORT, () => {
   console.log(`Server running at http://localhost:${SERVER_PORT}`);
 });
+
+export default app
