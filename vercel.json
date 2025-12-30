@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist",
+  "devCommand": "pnpm run dev",
+  "installCommand": "pnpm install",
+  "framework":"express",
+ "rewrites": [
+    { "source": "/files/(.*)", "destination": "/index.js" },
+    { "source": "/(.*)",      "destination": "/index.js" }
+  ]
+}
