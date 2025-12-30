@@ -8,6 +8,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../openapi.json" with { type: "json" };
 
 
+const port = SERVER_PORT;
 
 const app: Express = express();
 app.use(cors());
@@ -26,8 +27,8 @@ if (!fs.existsSync(DB_PATH)) fs.writeFileSync(DB_PATH, "[]");
 
 app.use(API_PREFIX, router);
 
-app.listen(SERVER_PORT, () => {
-  console.log(`Server running at http://localhost:${SERVER_PORT}`);
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
 
 export default app
