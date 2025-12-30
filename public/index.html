@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>File Storage</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f7f7f7;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    button {
+      margin-right: 5px;
+      cursor: pointer;
+    }
+
+    pre {
+      background: #eee;
+      padding: 10px;
+      max-height: 200px;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📁 File Storage</h1>
+
+<div class="box">
+  <h3>Upload File</h3>
+  <input type="file" id="fileInput" />
+  <button onclick="uploadFile()">Upload</button>
+</div>
+
+<div class="box">
+  <h3>Stored Files</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Size (KB)</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="fileTable"></tbody>
+  </table>
+</div>
+
+<div class="box">
+  <h3>File Content</h3>
+  <pre id="fileContent">Select a file to view content</pre>
+</div>
+
+<script>
+const API = "http://localhost:3000/files";
+
+async function loadFiles() {
+  const res = await fetch(API);
+  const files = await res.json();
+
+  const table = document.getElementById("fileTable");
+  table.innerHTML = "";
+
+  files.forEach(file => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${file.name}</td>
+      <td>${(file.size / 1024).toFixed(2)}</td>
+      <td>
+        <button onclick="downloadFile('${file.id}')">⬇</button>
+        <button onclick="viewContent('${file.id}')">👁</button>
+        <button onclick="deleteFile('${file.id}')">🗑</button>
+      </td>
+    `;
+
+    table.appendChild(tr);
+  });
+}
+
+async function uploadFile() {
+  const fileInput = document.getElementById("fileInput");
+  if (!fileInput.files.length) return alert("Select a file");
+
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
+
+  const res = await fetch(`${API}/upload`, {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  if (!res.ok) return alert(data.error);
+
+  fileInput.value = "";
+  loadFiles();
+}
+
+function downloadFile(id) {
+  window.open(`${API}/download/${id}`, "_blank");
+}
+
+async function viewContent(id) {
+  const res = await fetch(`${API}/content/${id}`);
+  if (!res.ok) return alert("Cannot read file");
+
+  const text = await res.text();
+  document.getElementById("fileContent").textContent = text;
+}
+
+async function deleteFile(id) {
+  if (!confirm("Delete this file?")) return;
+
+  await fetch(`${API}/${id}`, { method: "DELETE" });
+  loadFiles();
+}
+
+loadFiles();
+</script>
+
+</body>
+</html>
