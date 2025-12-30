@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import multer from "multer";
 import fs from "fs";
-import { saveFile, deleteFile, getFile, readDB } from "./fileHandle.js";
+import { saveFile, deleteFile, getFile, readDB, toFilePath } from "./fileHandle.js";
 
 const upload = multer({ dest: "temp/" });
 const router: Router = express();
@@ -22,7 +22,7 @@ router.get("/download/:id", (req, res) => {
   const file = getFile(req.params.id);
   if (!file) return res.status(404).json({ error: "File not found" });
 
-  res.download(file.path, file.name);
+  res.download(toFilePath(file.path), file.name);
 });
 
 
@@ -30,7 +30,7 @@ router.get("/content/:id", (req, res) => {
   const file = getFile(req.params.id);
   if (!file) return res.status(404).json({ error: "File not found" });
 
-  const content = fs.readFileSync(file.path, "utf-8");
+  const content = fs.readFileSync(toFilePath(file.path), "utf-8");
   res.send(content);
 });
 

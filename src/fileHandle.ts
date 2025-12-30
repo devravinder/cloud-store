@@ -21,8 +21,10 @@ export const writeDB = (data: FileMeta[]) => {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 };
 
-export const getTotalSize = (files: FileMeta[]) =>
+const getTotalSize = (files: FileMeta[]) =>
   files.reduce((sum, f) => sum + f.size, 0);
+
+export const toFilePath=(fileName:string)=>path.join(STORE_DIR, fileName)
 
 export const saveFile = (file: Express.Multer.File): FileMeta => {
   if (file.size > MAX_FILE_SIZE) {
@@ -36,17 +38,19 @@ export const saveFile = (file: Express.Multer.File): FileMeta => {
     throw new Error("Total storage limit exceeded (100MB)");
   }
 
-  const id = uuid();
-  const filePath = path.join(STORE_DIR, id);
+  const ext = path.extname(file.originalname); // <-- KEEP EXTENSION
+  const id = `${uuid()}${ext}`;
+  const storedFileName = id //`${id}${ext}`;
+  const finalPath = toFilePath(storedFileName);
 
-  fs.renameSync(file.path, filePath);
+  fs.renameSync(file.path, finalPath);
 
   const meta: FileMeta = {
     id,
     name: file.originalname,
     mimeType: file.mimetype,
     size: file.size,
-    path: filePath,
+    path: storedFileName,
     createdAt: new Date().toISOString()
   };
 
@@ -61,7 +65,7 @@ export const deleteFile = (id: string) => {
   const file = files.find(f => f.id === id);
   if (!file) throw new Error("File not found");
 
-  fs.unlinkSync(file.path);
+  fs.unlinkSync(toFilePath(file.path));
   writeDB(files.filter(f => f.id !== id));
 };
 
