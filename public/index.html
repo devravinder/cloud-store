@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>File Storage</title>
+  <title>Cloud Store</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
   <style>
     :root {
       --primary: #2563eb;
@@ -124,7 +125,9 @@
 <body>
 
   <h1 style="display:flex; justify-content:space-between; align-items:center;">
-    <span>📁 File Storage</span>
+    <span>
+      <img src="/favicon.png" style="width: 32px; height: 32px;" />
+      Cloud Store</span>
 
     <div style="display:flex; gap:10px;">
       <button class="icon" title="Upload file" onclick="triggerUpload()">📤</button>
@@ -136,19 +139,19 @@
 
 
   <div class="card">
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>File</th>
-          <th>Size</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="fileTable"></tbody>
-    </table>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Size</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="fileTable"></tbody>
+      </table>
+    </div>
   </div>
-</div>
 
 
   <div class="card">
