@@ -3,7 +3,7 @@ import { getStorage } from "firebase-admin/storage";
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+  storageBucket: process.env.APP_FIREBASE_STORAGE_BUCKET
 });
 
 const bucket = getStorage().bucket();

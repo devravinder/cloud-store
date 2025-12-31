@@ -13,7 +13,7 @@
       "predeploy": [
         "npm run build"
       ],
-      "source": "dist"
+      "source": "."
     }
   ],
   "emulators": {

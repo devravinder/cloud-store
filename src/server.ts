@@ -2,7 +2,7 @@ import cors from "cors";
 import express, { type Express } from "express";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "../openapi.json" with { type: "json" };
+import swaggerDocument from "./openapi.json" with { type: "json" };
 import { API_PREFIX } from "./constants.js";
 import routes from "./routes.js";
 
