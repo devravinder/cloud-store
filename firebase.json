@@ -11,10 +11,11 @@
         "*.local"
       ],
       "predeploy": [
-        "npm run build"
+        "npm run firebase:build"
       ],
-      "source": "."
+      "source": "firebase-src"
     }
+
   ],
   "emulators": {
     "port": 9000,
