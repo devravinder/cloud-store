@@ -7,13 +7,20 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx --no-warnings --env-file=.env --watch src/start.ts",
-    "start": "node --no-warnings --env-file=.env dist/start.js"
+    "start": "node --no-warnings --env-file=.env dist/start.js",
+    "e:serve": "npm run build && firebase emulators:start --only functions",
+    "e:shell": "npm run build && firebase functions:shell",
+    "e:start": "npm run shell",
+    "e:deploy": "firebase deploy --only functions",
+    "e:logs": "firebase functions:log"
   },
   "directories": {
         "serve": "public"
     },
   "files": ["public","dist", "dist/start.js"],
-  
+  "engines": {
+    "node": "24"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.2.1",

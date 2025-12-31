@@ -61,7 +61,7 @@
       - eslint No
 
 5. Refer the generated functions folder & do the changes in the project
-   - see: pacakge.json scripts & packages
+   - see: pacakge.json scripts, packages, main, files & engines
    - src/index.ts
    - tsconfig.json
    - refer [Docs](https://firebase.google.com/docs/hosting/frameworks/express)
