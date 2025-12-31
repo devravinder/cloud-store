@@ -9,11 +9,11 @@
     "dev": "tsx --no-warnings --env-file=.env --watch src/start.ts",
     "start": "node --no-warnings --env-file=.env dist/start.js",
     "firebase:build": "rm -rf firebase-src && npm run build && cp package.json firebase-src/ && cp -r dist firebase-src/ && cp -r public firebase-src/ && cp .env firebase-src/",
-    "e:serve": "npm run build && firebase emulators:start --only firebase-src",
-    "e:shell": "npm run build && firebase firebase-src:shell",
+    "e:serve": "npm run firebase:build && firebase emulators:start --only functions",
+    "e:shell": "npm run build && firebase functions:shell",
     "e:start": "npm run shell",
-    "e:deploy": "firebase deploy --only firebase-src",
-    "e:logs": "firebase firebase-src:log"
+    "e:deploy": "npm run firebase:build && firebase deploy --only functions",
+    "e:logs": "firebase functions:log"
   },
   "directories": {
         "serve": "public"
@@ -26,7 +26,7 @@
     "cors": "^2.8.5",
     "express": "^5.2.1",
     "firebase-admin": "^13.6.0",
-    "firebase-firebase-src": "^7.0.2",
+    "firebase-functions": "^7.0.2",
     "multer": "^2.0.2",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^13.0.0"
