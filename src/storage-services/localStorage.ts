@@ -1,7 +1,12 @@
 import fs from "fs";
 import path from "path";
 import { v4 as uuid } from "uuid";
-import { DB_PATH, STORE_DIR, MAX_FILE_SIZE, MAX_TOTAL_SIZE } from "./constants.js";
+import {
+  DB_PATH,
+  STORE_DIR,
+  MAX_FILE_SIZE,
+  MAX_TOTAL_SIZE,
+} from "../constants.js";
 
 export interface FileMeta {
   id: string;
@@ -11,6 +16,11 @@ export interface FileMeta {
   path: string;
   createdAt: string;
 }
+
+export const setUp = () => {
+  if (!fs.existsSync(STORE_DIR)) fs.mkdirSync(STORE_DIR, { recursive: true });
+  if (!fs.existsSync(DB_PATH)) fs.writeFileSync(DB_PATH, "[]");
+};
 
 export const readDB = (): FileMeta[] => {
   if (!fs.existsSync(DB_PATH)) return [];
@@ -24,7 +34,7 @@ export const writeDB = (data: FileMeta[]) => {
 const getTotalSize = (files: FileMeta[]) =>
   files.reduce((sum, f) => sum + f.size, 0);
 
-export const toFilePath=(fileName:string)=>path.join(STORE_DIR, fileName)
+export const toFilePath = (fileName: string) => path.join(STORE_DIR, fileName);
 
 export const saveFile = (file: Express.Multer.File): FileMeta => {
   if (file.size > MAX_FILE_SIZE) {
@@ -40,7 +50,7 @@ export const saveFile = (file: Express.Multer.File): FileMeta => {
 
   const ext = path.extname(file.originalname); // <-- KEEP EXTENSION
   const id = `${uuid()}${ext}`;
-  const storedFileName = id //`${id}${ext}`;
+  const storedFileName = id; //`${id}${ext}`;
   const finalPath = toFilePath(storedFileName);
 
   fs.renameSync(file.path, finalPath);
@@ -51,7 +61,7 @@ export const saveFile = (file: Express.Multer.File): FileMeta => {
     mimeType: file.mimetype,
     size: file.size,
     path: storedFileName,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
   };
 
   files.push(meta);
@@ -62,14 +72,14 @@ export const saveFile = (file: Express.Multer.File): FileMeta => {
 
 export const deleteFile = (id: string) => {
   const files = readDB();
-  const file = files.find(f => f.id === id);
+  const file = files.find((f) => f.id === id);
   if (!file) throw new Error("File not found");
 
   fs.unlinkSync(toFilePath(file.path));
-  writeDB(files.filter(f => f.id !== id));
+  writeDB(files.filter((f) => f.id !== id));
 };
 
 export const getFile = (id: string) => {
   const files = readDB();
-  return files.find(f => f.id === id);
+  return files.find((f) => f.id === id);
 };

@@ -2,16 +2,23 @@
   "name": "cloud-store",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/server.js",
+  "main": "dist/start.js",
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "tsx --no-warnings --env-file=.env --watch src/server.ts",
-    "start": "node --no-warnings --env-file=.env dist/server.js"
+    "dev": "tsx --no-warnings --env-file=.env --watch src/start.ts",
+    "start": "node --no-warnings --env-file=.env dist/start.js"
   },
+  "directories": {
+        "serve": "public"
+    },
+  "files": ["public","dist", "dist/start.js"],
+  
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.2.1",
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.2",
     "multer": "^2.0.2",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^13.0.0"
@@ -29,6 +36,4 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.26.2"
-  
-  
 }
