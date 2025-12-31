@@ -10,9 +10,7 @@
         "firebase-debug.*.log",
         "*.local"
       ],
-      "predeploy": [
-        "npm run firebase:build"
-      ],
+      "predeploy": "npm run firebase:build",
       "source": "firebase-src"
     }
 

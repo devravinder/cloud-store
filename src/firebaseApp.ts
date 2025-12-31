@@ -5,7 +5,11 @@ import {onRequest} from "firebase-functions/https";
 import app from "./server.js";
 import { logger } from "./logger.js";
 
-setGlobalOptions({ maxInstances: 1 });
-onRequest(app)
-
+import type {Request, Response} from 'express'
 logger.log("Firebase app started")
+setGlobalOptions({ maxInstances: 1 });
+// onRequest((req,res)=>res.json("Hello"))
+
+export function handle(req:Request, res:Response) {
+   res.send("Hellow");
+}
