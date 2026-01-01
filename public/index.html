@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <title>Cloud Store</title>
   <link rel="icon" type="image/png" href="/favicon.png" />
+  <script src="/env.js"></script>
   <style>
     :root {
       --primary: #2563eb;
@@ -167,7 +168,7 @@
 
 
   <script>
-    const API = "/api";
+    const API = `${__WEB_CONFIG__.WEB_BASE_API_URL}/files`
 
     async function loadFiles() {
       const res = await fetch(API);

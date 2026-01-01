@@ -16,6 +16,15 @@
       "source": "firebase-src"
     }
   ],
+  "hosting": {
+    "public": "public",
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "webApi" 
+      }
+    ]
+  },
   "emulators": {
     "ui": {
       "enabled": true,

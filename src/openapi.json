@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/files": {
+    "/api/files": {
       "get": {
         "tags": ["Files"],
         "summary": "List all files",
@@ -36,7 +36,7 @@
         }
       }
     },
-    "/files/upload": {
+    "/api/files/upload": {
       "post": {
         "tags": ["Files"],
         "summary": "Upload a file",
@@ -68,7 +68,7 @@
         }
       }
     },
-    "/files/download/{id}": {
+    "/api/files/download/{id}": {
       "get": {
         "tags": ["Files"],
         "summary": "Download file",
@@ -87,7 +87,7 @@
         }
       }
     },
-    "/files/content/{id}": {
+    "/api/files/content/{id}": {
       "get": {
         "tags": ["Files"],
         "summary": "Read file content",
@@ -113,7 +113,7 @@
         }
       }
     },
-    "/files/{id}": {
+    "/api/files/{id}": {
       "delete": {
         "tags": ["Files"],
         "summary": "Delete file",

@@ -22,6 +22,8 @@ export const setUp = () => {
   if (!fs.existsSync(DB_PATH)) fs.writeFileSync(DB_PATH, "[]");
 };
 
+setUp()
+
 export const readDB = (): FileMeta[] => {
   if (!fs.existsSync(DB_PATH)) return [];
   return JSON.parse(fs.readFileSync(DB_PATH, "utf-8"));

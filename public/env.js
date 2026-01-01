@@ -1,0 +1,1 @@
+window.__WEB_CONFIG__={"WEB_BASE_API_URL":"/api","WEB_BASE_URL":"/"}
