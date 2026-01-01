@@ -78,9 +78,18 @@
       firebase emulators:start
    ```
 
-   ```bas
-      firebase emulators:start --only functions
+   ```bash
+      firebase emulators:start --only functions # only functions
    ```
+
+   ```bash
+      firebase emulators:start --only functions:default  # only default codebase
+        # we can have mmltiple codebases (projects)
+   ```
+ http://localhost:3000/cloud-store-79e72/us-central1/helloWorld
+ http://127.0.0.1:3000/cloud-store-79e72/us-central1/api
+
+ default region: us-central1
 
 ## Experimenatil
 

@@ -1,5 +1,8 @@
 {
   "projects": {
     "default": "cloud-store-79e72"
+  },
+  "functions": {
+    "region": "asia-south1"
   }
 }

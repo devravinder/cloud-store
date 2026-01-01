@@ -2,24 +2,36 @@
   "name": "cloud-store",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/start.js",
+  "main": "dist/startFirebase.js",
   "type": "module",
+  "config": {
+    "source":"firebase-src",
+    "firebase_source":"firebase-src"
+  },
   "scripts": {
+    "check":"echo $npm_package_source && echo $npm_package_config_firebase_source",
     "build": "rm -rf dist && tsc -p tsconfig.json",
-    "dev": "tsx --no-warnings --env-file=.env --watch src/start.ts",
-    "start": "node --no-warnings --env-file=.env dist/start.js",
-    "firebase:build": "mkdir -p firebase-src && npm run build && cp package.json firebase-src/ && cp -r dist firebase-src/ && cp -r public firebase-src/",
-    "e:f:start":"rm -rf firebase-src && mkdir -p firebase-src && cp .env.local firebase-src/ && npm run firebase:build && firebase emulators:start --only functions",
-    "e:serve": "npm run firebase:build && firebase emulators:start --only functions",
-    "e:shell": "npm run build && firebase functions:shell",
-    "e:start": "npm run shell",
-    "e:deploy": "npm run firebase:build && firebase deploy --only functions",
-    "e:logs": "firebase functions:log"
+    "dev": "tsx --no-warnings --env-file=.env --watch src/startLocal.ts",
+    "start": "node --no-warnings --env-file=.env dist/startLocal.js",
+
+    "create:firebase_folder":"mkdir -p $npm_package_config_firebase_source",
+    "copy:firebase-files":"cp package.json $npm_package_config_firebase_source && cp .env.local $npm_package_config_firebase_source && cp -r dist $npm_package_config_firebase_source && cp -r public $npm_package_config_firebase_source",
+    
+    "prestart:firebase":"npm run build && npm run create:firebase_folder && npm run copy:firebase-files",
+    "start:emulators":"npm run prestart:firebase && firebase emulators:start",
+    "start:emulators:functions":"npm run prestart:firebase && firebase emulators:start --only functions",
+
+
+    "deploy":"npm run prestart:firebase && firebase deploy",
+    "deploy:functions":"npm run prestart:firebase && firebase deploy --only functions"
   },
   "directories": {
-        "serve": "public"
-    },
-  "files": ["public","dist", "dist/start.js"],
+    "serve": "public"
+  },
+  "files": [
+    "public",
+    "dist/startFirebase.js"
+  ],
   "engines": {
     "node": "24"
   },
