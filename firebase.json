@@ -11,7 +11,7 @@
         "*.local"
       ],
       "predeploy": [
-        "npm run prestart:firebase"
+        "npm run prestart:firebase:functions"
       ],
       "source": "firebase-src"
     }
@@ -32,6 +32,9 @@
     },
     "functions": {
       "port": 3000
+    },
+    "hosting":{
+      "port": 5000
     }
   }
 }

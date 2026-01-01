@@ -6,7 +6,8 @@
   "type": "module",
   "config": {
     "source":"firebase-src",
-    "firebase_source":"firebase-src"
+    "firebase_source":"firebase-src",
+    "firebase_env":".env"
   },
   "scripts": {
     "check":"echo $npm_package_source && echo $npm_package_config_firebase_source",
@@ -15,15 +16,20 @@
     "start": "node --no-warnings --env-file=.env dist/startLocal.js",
 
     "create:firebase_folder":"mkdir -p $npm_package_config_firebase_source",
-    "copy:firebase-files":"cp package.json $npm_package_config_firebase_source && cp .env.local $npm_package_config_firebase_source && cp -r dist $npm_package_config_firebase_source && cp -r public $npm_package_config_firebase_source",
-    
-    "prestart:firebase":"npm run build && npm run create:firebase_folder && npm run copy:firebase-files",
-    "start:emulators":"npm run prestart:firebase && firebase emulators:start",
-    "start:emulators:functions":"npm run prestart:firebase && firebase emulators:start --only functions",
+    "copy:firebase-files":"cp package.json $npm_package_config_firebase_source && cp -r dist $npm_package_config_firebase_source",
+    "copy:local:envs":"cp $npm_package_config_firebase_env $npm_package_config_firebase_source/.env.local",
 
 
-    "deploy":"npm run prestart:firebase && firebase deploy",
-    "deploy:functions":"npm run prestart:firebase && firebase deploy --only functions"
+    "prestart:firebase:functions":"npm run build && npm run create:firebase_folder && npm run copy:firebase-files",
+    "prestart:firebase:hosting":"tsx --no-warnings --env-file=$npm_package_config_firebase_env src/util/generateWebEnv.ts",
+
+    "start:emulators":"npm run prestart:firebase:functions && npm run prestart:firebase:hosting && firebase emulators:start",
+    "start:emulators:functions":"npm run prestart:firebase:functions && npm run copy:local:envs && firebase emulators:start --only functions",
+    "start:emulators:hosting":"npm run prestart:firebase:hosting && firebase emulators:start --only hosting",
+
+
+    "deploy":"npm run prestart:firebase:functions && firebase deploy",
+    "deploy:functions":"npm run prestart:firebase:functions && firebase deploy --only functions"
   },
   "directories": {
     "serve": "public"
