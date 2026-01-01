@@ -13,10 +13,16 @@ export class LocalFileStorage implements StorageService {
     return fs.existsSync(filePath);
   }
 
-  async upload(buffer: Buffer, filename: string, _mimeType: string) {
-    const filePath = toFilePath(filename);
-    fs.writeFileSync(filePath, buffer);
+  async upload(tempFilePath: string, filename: string, _mimeType: string) {
+    const destPath = toFilePath(filename);
 
+    fs.renameSync(tempFilePath, destPath);
+
+    return { path: filename };
+  }
+
+  async writeTextContent(filename: string, content: string) {
+    fs.writeFileSync(toFilePath(filename), content, "utf-8");
     return { path: filename };
   }
 

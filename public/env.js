@@ -1,1 +1,1 @@
-window.__WEB_CONFIG__={"WEB_BASE_API_URL":"http://localhost:3000/api","WEB_BASE_URL":"/"}
+window.__WEB_CONFIG__={"WEB_BASE_API_URL":"/api","WEB_BASE_URL":"/"}

@@ -16,22 +16,33 @@ export class FirebaseCloudStorage implements StorageService {
     this.bucket = getStorage().bucket();
   }
 
-  async isFileExits(filename: string){
+  async isFileExits(filename: string) {
     const file = this.bucket.file(filename);
     const [exists] = await file.exists();
-    return exists
+    return exists;
   }
 
+  async upload(tempFilePath: string, filename: string, mimeType: string) {
+    await this.bucket.upload(tempFilePath, {
+      destination: filename,
+      metadata: {
+        contentType: mimeType,
+      },
+      resumable: false,
+    });
 
-  async upload(
-    buffer: Buffer,
+    return { path: filename };
+  }
+
+  async writeTextContent(
     filename: string,
-    mimeType: string
+    content: string,
+    contentType: string = "text/plain"
   ) {
     const file = this.bucket.file(filename);
 
-    await file.save(buffer, {
-      contentType: mimeType,
+    await file.save(Buffer.from(content, "utf-8"), {
+      contentType,
       resumable: false,
     });
 
@@ -64,7 +75,7 @@ export class FirebaseCloudStorage implements StorageService {
 
       file
         .createReadStream()
-        .on("data", chunk => (data += chunk.toString("utf-8")))
+        .on("data", (chunk) => (data += chunk.toString("utf-8")))
         .on("end", () => resolve(data))
         .on("error", reject);
     });

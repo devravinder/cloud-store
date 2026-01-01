@@ -12,9 +12,9 @@ const setupDb = async () => {
 };
 
 const writeToDb = async (files: FileMeta[]) => {
-  await storageService.upload(
-    Buffer.from(JSON.stringify(files, null, 2), "utf-8"),
+  await storageService.writeTextContent(
     DB_FILE,
+    JSON.stringify(files, null, 2),
     "application/json"
   );
 };

@@ -1,67 +1,47 @@
 import express, { Router } from "express";
 import multer from "multer";
-import fs from "fs";
-import { saveFile, deleteFile, getFile, readDB, toFilePath } from "./storage-services/localStorage.js";
+import { FileService } from "./FilesService.js";
+import { NoFilePayloadError } from "./Errors.js";
 
 const upload = multer({ dest: "temp/" });
 const router: Router = express();
 
+router.post("/upload", upload.single("file"), async (req, res) => {
+  if (!req.file) throw new NoFilePayloadError("No file uploaded");
+  const result = await FileService.saveFile(req.file);
+  res.json(result);
+});
 
-router.post("/upload", upload.single("file"), (req, res) => {
+router.get("/download/:id", async (req, res) => {
+  const { stream, file } = await FileService.downloadFile(req.params.id!);
+
+  res.contentType(file.mimeType);
+  res.setHeader("Content-Disposition", `attachment; filename="${file.name}"`);
+  stream.pipe(res);
+});
+
+router.get("/content/:id", async (req, res) => {
+  const content = await FileService.getFileContent(req.params.id!);
+  res.send(content);
+});
+
+router.put("/update/:id", upload.single("file"), async (req, res) => {
   try {
-    if (!req.file) throw new Error("No file uploaded");
-    const result = saveFile(req.file);
+    const result = await FileService.updateFile(req.params.id!, req.file!);
     res.json(result);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
   }
 });
 
-
-router.get("/download/:id", (req, res) => {
-  const file = getFile(req.params.id);
-  if (!file) return res.status(404).json({ error: "File not found" });
-
-  res.download(toFilePath(file.path), file.name);
+router.delete("/:id", async (req, res) => {
+  await FileService.deleteFile(req.params.id);
+  res.json({ message: "File deleted" });
 });
 
-
-router.get("/content/:id", (req, res) => {
-  const file = getFile(req.params.id);
-  if (!file) return res.status(404).json({ error: "File not found" });
-
-  const content = fs.readFileSync(toFilePath(file.path), "utf-8");
-  res.send(content);
-});
-
-
-router.put("/update/:id", upload.single("file"), (req, res) => {
-  try {
-    const old = getFile(req.params.id!);
-    if (!old) return res.status(404).json({ error: "File not found" });
-
-    deleteFile(old.id);
-    const updated = saveFile(req.file!);
-
-    res.json(updated);
-  } catch (err: any) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-
-router.delete("/:id", (req, res) => {
-  try {
-    deleteFile(req.params.id);
-    res.json({ message: "File deleted" });
-  } catch (err: any) {
-    res.status(404).json({ error: err.message });
-  }
-});
-
-
-router.get("/", (_, res) => {
-  res.json(readDB());
+router.get("/", async (_, res) => {
+  const files = await FileService.getFiles();
+  res.json(files);
 });
 
 export default router;

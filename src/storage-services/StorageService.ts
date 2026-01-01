@@ -7,12 +7,17 @@ export interface UploadResult {
 }
 
 export interface StorageService {
-
-  isFileExits(filename: string): Promise<boolean>
+  isFileExits(filename: string): Promise<boolean>;
   upload(
-    buffer: Buffer,
+    tempFilePath: string,
     filename: string,
     mimeType: string
+  ): Promise<UploadResult>;
+
+  writeTextContent(
+    filename: string,
+    cotent: string,
+    contentType?: string
   ): Promise<UploadResult>;
 
   download(filename: string): Promise<Readable>;
