@@ -51,6 +51,7 @@ export class FirebaseCloudStorage implements StorageService {
     content: string,
     contentType: string = "text/plain"
   ) {
+    console.log({filename})
     const file = this.bucket.file(filename);
 
     await file.save(Buffer.from(content, "utf-8"), {

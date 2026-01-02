@@ -27,6 +27,7 @@ export interface StorageService {
   readContent(filename: string): Promise<string>;
 }
 
+console.log("====storage", process.env.STORAGE )
 export const storageService: StorageService =
   process.env.STORAGE === "FIREBASE"
     ? new FirebaseCloudStorage()

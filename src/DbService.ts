@@ -7,6 +7,8 @@ export const setupDb = async () => {
   console.log("Setting up DB");
   const isFileExits = await storageService.isFileExits(DB_FILE);
 
+  console.log({isFileExits})
+
   if (!isFileExits) {
     await writeToDb([]);
   }

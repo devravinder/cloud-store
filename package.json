@@ -7,7 +7,7 @@
   "config": {
     "source":"firebase-src",
     "firebase_source":"firebase-src",
-    "firebase_env":".env.local"
+    "firebase_env":".env.firebase.local"
   },
   "scripts": {
     "check":"echo $npm_package_source && echo $npm_package_config_firebase_source",
@@ -15,12 +15,13 @@
     "dev": "tsx --no-warnings --env-file=.env --watch src/startLocal.ts",
     "start": "node --no-warnings --env-file=.env dist/startLocal.js",
 
+    "remove:firebase_folder":"rm -rf $npm_package_config_firebase_source",
     "create:firebase_folder":"mkdir -p $npm_package_config_firebase_source",
-    "copy:firebase-files":"cp package.json $npm_package_config_firebase_source && cp -r dist $npm_package_config_firebase_source",
+    "copy:firebase-files":"cp package.json $npm_package_config_firebase_source && cp -r dist $npm_package_config_firebase_source && npm run copy:local:envs",
     "copy:local:envs":"cp $npm_package_config_firebase_env $npm_package_config_firebase_source/.env.local",
 
 
-    "prestart:firebase:functions":"npm run build && npm run create:firebase_folder && npm run copy:firebase-files",
+    "prestart:firebase:functions":"npm run remove:firebase_folder && npm run create:firebase_folder && npm run build && npm run copy:firebase-files",
     "prestart:firebase:hosting":"tsx --no-warnings --env-file=$npm_package_config_firebase_env src/util/generateWebEnv.ts",
 
 
