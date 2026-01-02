@@ -22,7 +22,6 @@
 
     "prestart:firebase:functions":"npm run build && npm run create:firebase_folder && npm run copy:firebase-files",
     "prestart:firebase:hosting":"tsx --no-warnings --env-file=$npm_package_config_firebase_env src/util/generateWebEnv.ts",
-    "prestart:firebase:storage": "firebase target:apply storage main_storage cloud-store-test-app",
 
 
     "start:emulators":"npm run prestart:firebase:functions && npm run prestart:firebase:hosting && firebase emulators:start",
