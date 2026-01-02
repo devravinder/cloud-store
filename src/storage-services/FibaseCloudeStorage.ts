@@ -4,6 +4,8 @@ import type { StorageService } from "./StorageService.js";
 
 type Bucket = ReturnType<ReturnType<typeof getStorage>["bucket"]>;
 
+// var serviceAccount = require("path/to/serviceAccountKey.json");
+// credential: admin.credential.cert(serviceAccount)
 export class FirebaseCloudStorage implements StorageService {
   bucket: Bucket;
 
