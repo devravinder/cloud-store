@@ -7,8 +7,9 @@ export const setupDb = async () => {
   console.log("Setting up DB");
   const isFileExits = await storageService.isFileExits(DB_FILE);
 
-  if (!isFileExits) await writeToDb([]);
-
+  if (!isFileExits) {
+    await writeToDb([]);
+  }
   console.log("DB Setup done");
 };
 
@@ -22,9 +23,7 @@ const writeToDb = async (files: FileMeta[]) => {
 
 const readDB = async () => {
   const content = await storageService.readContent(DB_FILE);
-
   const data = JSON.parse(content) as FileMeta[];
-
   return data;
 };
 

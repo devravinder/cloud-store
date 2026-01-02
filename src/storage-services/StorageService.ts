@@ -1,5 +1,5 @@
 import type { Readable } from "node:stream";
-import { FirebaseCloudStorage } from "./FibaseCloudeStorage.js";
+import { FirebaseCloudStorage } from "./FirebaseCloudStorage.js";
 import { LocalFileStorage } from "./LocalFileStorage.js";
 
 export interface UploadResult {

@@ -1,10 +1,10 @@
 import path from "node:path";
 import { MAX_FILE_SIZE, MAX_TOTAL_SIZE } from "./constants.js";
 import { DB } from "./DbService.js";
-import type { FileMeta } from "./storage-services/localStorage.js";
 import { randomUUID } from "node:crypto";
 import { storageService } from "./storage-services/StorageService.js";
 import { MaxPayloadError, NotFoundError } from "./Errors.js";
+import type { FileMeta } from "../dist/storage-services/localStorage.js";
 
 const getTotalSize = (files: FileMeta[]) =>
   files.reduce((sum, f) => sum + f.size, 0);

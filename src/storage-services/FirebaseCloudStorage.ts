@@ -10,10 +10,20 @@ export class FirebaseCloudStorage implements StorageService {
   bucket: Bucket;
 
   constructor() {
-    admin.initializeApp({
-      credential: admin.credential.applicationDefault(),
-      storageBucket: process.env.APP_FIREBASE_STORAGE_BUCKET,
-    });
+    const isEmulator = process.env.FIREBASE_STORAGE_EMULATOR_HOST;
+
+    const storageBucket = process.env.APP_FIREBASE_STORAGE_BUCKET;
+
+    if (isEmulator) {
+      admin.initializeApp({
+        storageBucket,
+      });
+    } else {
+      admin.initializeApp({
+        credential: admin.credential.applicationDefault(),
+        storageBucket,
+      });
+    }
 
     this.bucket = getStorage().bucket();
   }
