@@ -4,7 +4,14 @@ import { DB } from "./DbService.js";
 import { randomUUID } from "node:crypto";
 import { storageService } from "./storage-services/StorageService.js";
 import { MaxPayloadError, NotFoundError } from "./Errors.js";
-import type { FileMeta } from "../dist/storage-services/localStorage.js";
+export interface FileMeta {
+    id: string;
+    name: string;
+    mimeType: string;
+    size: number;
+    path: string;
+    createdAt: string;
+}
 
 const getTotalSize = (files: FileMeta[]) =>
   files.reduce((sum, f) => sum + f.size, 0);

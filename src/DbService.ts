@@ -1,4 +1,4 @@
-import type { FileMeta } from "../dist/storage-services/localStorage.js";
+import type { FileMeta } from "./FilesService.js";
 import { storageService } from "./storage-services/StorageService.js";
 
 const DB_FILE = "db.json";
