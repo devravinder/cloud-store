@@ -10,9 +10,7 @@
         "firebase-debug.*.log",
         "*.local"
       ],
-      "predeploy": [
-        "npm run prestart:firebase:functions"
-      ],
+      "predeploy": ["npm run prestart:firebase:functions"],
       "source": "firebase-src"
     }
   ],
@@ -21,10 +19,18 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "webApi" 
+        "function": "webApi"
       }
     ]
   },
+
+  "storage": [
+    {
+       "rules": "storage.rules",
+       "target": "default",
+       "bucket":"cloud-store-79e72.appspot.com"
+    }
+  ],
   "emulators": {
     "ui": {
       "enabled": true,
@@ -33,8 +39,14 @@
     "functions": {
       "port": 3000
     },
-    "hosting":{
+    "hosting": {
       "port": 5000
+    },
+    "storage": {
+      "port": 9199,
+      "rules": "storage.rules",
+       "target": "default",
+       "bucket":"cloud-store-79e72.appspot.com"
     }
   }
 }

@@ -6,7 +6,10 @@ import swaggerDocument from "./openapi.json" with { type: "json" };
 import routes from "./routes.js";
 import './util/generateWebEnv.js';
 import { clientErrorHandler, serverErrorHandler } from "./Errors.js";
+import { setupDb } from "./DbService.js";
 
+
+await setupDb()
 const app: Express = express();
 app.use(cors());
 

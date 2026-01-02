@@ -2,6 +2,16 @@
   "projects": {
     "default": "cloud-store-79e72"
   },
+  "targets": {
+    "cloud-store-79e72": {
+      "storage": {
+        "default": [
+          "cloud-store-79e72.appspot.com"
+        ]
+      }
+    }
+  },
+  "etags": {},
   "functions": {
     "region": "asia-south1"
   }

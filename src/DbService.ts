@@ -1,10 +1,11 @@
-import type { FileMeta } from "./storage-services/localStorage.js";
+import type { FileMeta } from "../dist/storage-services/localStorage.js";
 import { storageService } from "./storage-services/StorageService.js";
 
 const DB_FILE = "db.json";
 
-const setupDb = async () => {
-  const isFileExits = storageService.isFileExits(DB_FILE);
+export const setupDb = async () => {
+  console.log("Setting up DB");
+  const isFileExits = await storageService.isFileExits(DB_FILE);
 
   if (!isFileExits) await writeToDb([]);
 
@@ -26,7 +27,5 @@ const readDB = async () => {
 
   return data;
 };
-
-setupDb();
 
 export const DB = { read: readDB, write: writeToDb };
