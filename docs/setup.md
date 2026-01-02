@@ -86,13 +86,9 @@
       firebase emulators:start --only functions:default  # only default codebase
         # we can have mmltiple codebases (projects)
    ```
- http://localhost:3000/cloud-store-79e72/us-central1/helloWorld
- http://127.0.0.1:3000/cloud-store-79e72/us-central1/api
 
  default region: us-central1
 
-## Experimenatil
+## Firebase Emulators Issue
 
-  firebase experiments:enable webframeworks
-  firebase init hosting
-    Experimantal web freamework: Yes
+1. don't use env variable names that are [reserved](https://firebase.google.com/docs/functions/config-env?gen=2nd#reserved-names)

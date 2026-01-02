@@ -5,40 +5,36 @@
   "main": "dist/startFirebase.js",
   "type": "module",
   "config": {
-    "source":"firebase-src",
-    "firebase_source":"firebase-src",
-    "firebase_env":".env.firebase.local"
+    "source": "firebase-src",
+    "firebase_source": "firebase-src",
+    "firebase_env": ".env.firebase.local"
   },
   "scripts": {
-    "check":"echo $npm_package_source && echo $npm_package_config_firebase_source",
+    "check": "echo $npm_package_source && echo $npm_package_config_firebase_source",
     "build": "rm -rf dist && tsc -p tsconfig.json",
     "dev": "tsx --no-warnings --env-file=.env --watch src/startLocal.ts",
     "start": "node --no-warnings --env-file=.env dist/startLocal.js",
-
-    "remove:firebase_folder":"rm -rf $npm_package_config_firebase_source",
-    "create:firebase_folder":"mkdir -p $npm_package_config_firebase_source",
-    "copy:firebase-files":"cp package.json $npm_package_config_firebase_source && cp -r dist $npm_package_config_firebase_source && npm run copy:local:envs",
-    "copy:local:envs":"cp $npm_package_config_firebase_env $npm_package_config_firebase_source/.env.local",
-
-
-    "prestart:firebase:functions":"npm run remove:firebase_folder && npm run create:firebase_folder && npm run build && npm run copy:firebase-files",
-    "prestart:firebase:hosting":"tsx --no-warnings --env-file=$npm_package_config_firebase_env src/util/generateWebEnv.ts",
-
-
-    "start:emulators":"npm run prestart:firebase:functions && npm run prestart:firebase:hosting && firebase emulators:start",
-    "start:emulators:functions":"npm run prestart:firebase:functions && npm run copy:local:envs && firebase emulators:start --only functions",
-    "start:emulators:hosting":"npm run prestart:firebase:hosting && firebase emulators:start --only hosting",
-    "start:emulators:storage":"firebase emulators:start --only storage",
-
-
-    "deploy":"npm run prestart:firebase:functions && firebase deploy",
-    "deploy:functions":"npm run prestart:firebase:functions && firebase deploy --only functions"
+    "remove:firebase_folder": "rm -rf $npm_package_config_firebase_source",
+    "create:firebase_folder": "mkdir -p $npm_package_config_firebase_source",
+    "copy:firebase-files": "cp package.json $npm_package_config_firebase_source && cp -r dist $npm_package_config_firebase_source",
+    "set:firebase:envs": "dotenv -e .env.firebase.local -- bash -c 'echo $ENV && echo $ENV'",
+    "prestart:firebase:functions": "npm run set:firebase:envs && npm run remove:firebase_folder && npm run create:firebase_folder && npm run build && npm run copy:firebase-files",
+    "prestart:firebase:hosting": "tsx --no-warnings --env-file=$npm_package_config_firebase_env src/util/generateWebEnv.ts",
+    "start:emulators": "npm run prestart:firebase:functions && npm run prestart:firebase:hosting && firebase emulators:start",
+    "start:emulators:functions": "npm run prestart:firebase:functions && firebase emulators:start --only functions",
+    "start:emulators:hosting": "npm run prestart:firebase:hosting && firebase emulators:start --only hosting",
+    "start:emulators:storage": "firebase emulators:start --only storage",
+    "deploy": "npm run prestart:firebase:functions && firebase deploy",
+    "deploy:functions": "npm run prestart:firebase:functions && firebase deploy --only functions"
   },
   "directories": {
     "serve": "public"
   },
   "files": [
     "public",
+    "dist",
+    ".env.local",
+    ".env",
     "dist/startFirebase.js"
   ],
   "engines": {
@@ -46,6 +42,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv-cli": "^11.0.0",
     "express": "^5.2.1",
     "firebase-admin": "^13.6.0",
     "firebase-functions": "^7.0.2",
