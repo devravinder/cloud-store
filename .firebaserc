@@ -6,7 +6,7 @@
     "cloud-store-79e72": {
       "storage": {
         "default": [
-          "cloud-store-79e72.appspot.com"
+          "cloud-store-79e72.firebasestorage.app"
         ]
       }
     }
