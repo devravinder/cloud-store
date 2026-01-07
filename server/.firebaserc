@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "cloud-store-66e3b"
+  },
+  "targets": {
+    "cloud-store-66e3b": {
+      "storage": {
+        "default": [
+          "cloud-store-66e3b.firebasestorage.app"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "functions": {
+    "region": "asia-south1"
+  }
+}

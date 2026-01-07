@@ -1,0 +1,51 @@
+{
+  "functions": [
+    {
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": ["npm run prestart:firebase:functions"],
+      "source": "firebase-src"
+    }
+  ],
+  "hosting": {
+    "public": "public",
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "webApi"
+      }
+    ]
+  },
+
+  "storage": [
+    {
+       "rules": "storage.rules",
+       "target": "default",
+       "bucket":"cloud-store-66e3b.firebasestorage.app"
+    }
+  ],
+  "emulators": {
+    "ui": {
+      "enabled": true,
+      "port": 4000
+    },
+    "functions": {
+      "port": 3000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "storage": {
+      "port": 9199,
+      "rules": "storage.rules",
+       "target": "default",
+       "bucket":"cloud-store-66e3b.firebasestorage.app"
+    }
+  }
+}

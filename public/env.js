@@ -1,1 +1,0 @@
-window.__WEB_CONFIG__={"WEB_BASE_API_URL":"http://127.0.0.1:3000/cloud-store-79e72/us-central1/app/api","WEB_BASE_URL":"/"}
