@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "pnpm run build && gh-pages --cname=cloud-store.paravartech.com --dist dist --branch deploy"
-
   },
   "directories": {
     "serve": "dist"
@@ -20,6 +19,7 @@
   ],
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
+    "firebase": "^12.7.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.18"

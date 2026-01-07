@@ -1,4 +1,3 @@
-// src/lib/firebase.ts
 import admin, { type ServiceAccount, type AppOptions } from "firebase-admin";
 import { getApps, initializeApp } from "firebase-admin/app";
 import {
