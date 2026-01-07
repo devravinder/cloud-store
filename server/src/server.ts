@@ -1,3 +1,4 @@
+import 'dotenv/config' // to work properly on firebase
 import cors from "cors";
 import express, { type Express } from "express";
 import swaggerUi from "swagger-ui-express";
