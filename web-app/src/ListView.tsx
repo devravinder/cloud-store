@@ -41,30 +41,30 @@ export default function ListView({
                 </td>
                 <td data-label="File">{file.name}</td>
                 <td data-label="Size">{(file.size / 1024).toFixed(2)} KB</td>
-                <td data-label="Actions" className="flex flex-row gap-2 flex-wrap">
+                <td data-label="Actions" className=" grid grid-cols-2 gap-2 sm:inline-flex sm:items-center sm:gap-2">
                   <button
-                    className="disabled:cursor-not-allowed text-blue-500 cursor-pointer inline-flex items-center px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200 "
+                    className="w-12 disabled:cursor-not-allowed text-blue-500 cursor-pointer px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200 "
                     title="Download"
                     onClick={() => onCopyLick(file.id)}
                   >
                     {LINK}
                   </button>
                   <button
-                    className="disabled:cursor-not-allowed text-blue-500 cursor-pointer inline-flex items-center px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200 "
+                    className="w-12 disabled:cursor-not-allowed text-blue-500 cursor-pointer px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200 "
                     title="Download"
                     onClick={() => onDownload(file.id)}
                   >
                     {DOWNLOAD}
                   </button>
                   <button
-                    className="disabled:cursor-not-allowed text-blue-500 cursor-pointer inline-flex items-center px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200 "
+                    className="w-12 disabled:cursor-not-allowed text-blue-500 cursor-pointer px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200 "
                     title="View"
                     onClick={() => onView(file.id)}
                   >
                     {VIEW}
                   </button>
                   <button
-                    className="disabled:cursor-not-allowed text-blue-500 cursor-pointer inline-flex items-center px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200 "
+                    className="w-12 disabled:cursor-not-allowed text-blue-500 cursor-pointer px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200 "
                     title="Delete"
                     onClick={() => onDelete(file.id)}
                   >

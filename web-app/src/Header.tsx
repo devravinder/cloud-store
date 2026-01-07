@@ -14,7 +14,7 @@ export default function Header({
     <h1 className="flex flex-row justify-between items-center">
       <div className="inline-flex items-baseline gap-2">
         <img src="/favicon.png" className="w-8 h-8" />
-        <span className="text-4xl font-bold">Cloud Store</span>
+        <span className="text-4xl font-bold hidden sm:inline">Cloud Store</span>
       </div>
       <div className="flex flex-row gap-4 items-center">
         <FileInput label={UPLOAD} onChange={onUpload} title="Upload" />
