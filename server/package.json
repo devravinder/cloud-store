@@ -22,7 +22,7 @@
     "start:emulators": "npm run prestart:firebase:functions && firebase emulators:start",
     "start:emulators:functions": "npm run prestart:firebase:functions && firebase emulators:start --only functions",
     "start:emulators:storage": "firebase emulators:start --only storage",
-    "deploy": "npm run prestart:firebase:functions && firebase deploy",
+    "deploy": "firebase deploy",
     "deploy:functions": "npm run prestart:firebase:functions && firebase deploy --only functions"
   },
   "directories": {

@@ -13,16 +13,6 @@
       "source": "firebase-src"
     }
   ],
-  "hosting": {
-    "public": "public",
-    "rewrites": [
-      {
-        "source": "**",
-        "function": "webApi"
-      }
-    ]
-  },
-
   "storage": [
     {
        "rules": "storage.rules",
