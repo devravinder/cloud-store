@@ -8,8 +8,10 @@ export const STORE_DIR = path.join(process.cwd(), "src", "local-files-store");
 export const DB_PATH = path.join(STORE_DIR, "files.json");
 export const PUBLIC_PATH = path.join(process.cwd(), "public");
 
-export const IS_EMULATOR = Boolean(process.env.FIREBASE_STORAGE_EMULATOR_HOST);
+export const FIREBASE_CREDENTIALS_FILE=path.join(process.cwd(), "firebase-credentials.json")
 
+export const IS_EMULATOR = Boolean(process.env.FIREBASE_STORAGE_EMULATOR_HOST);
+export const IS_LOCAL = process.env.APP_ENV==="LOCAL";
 
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
