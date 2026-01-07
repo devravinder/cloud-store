@@ -1,16 +1,25 @@
 import { useAuthentication } from "./hooks/useAuthentication";
 
 export default function Login() {
-  const { login } = useAuthentication();
+  const { loginWithRedirect, loginWithPopup } = useAuthentication();
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="w-full flex justify-center items-center">
+      <div className="flex flex-col w-full sm:w-96 gap-4 items-center justify-center h-screen p-4 rounded-lg shadow bg-white">
       <button
-        onClick={login}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        onClick={loginWithRedirect}
+        className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
-        Login with Google
+        Login with Google Redirect
       </button>
+
+      <button
+        onClick={loginWithPopup}
+        className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Login with Google Popup
+      </button>
+    </div>
     </div>
   );
 }

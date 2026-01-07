@@ -3,10 +3,11 @@ import { getAnalytics } from "firebase/analytics";
 import {
   getAuth,
   signInWithRedirect,
+  signInWithPopup,
   GoogleAuthProvider,
-  onAuthStateChanged,
   type User,
   getRedirectResult,
+  type UserCredential,
 } from "firebase/auth";
 import {
   createContext,
@@ -15,6 +16,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import Login from "../Login";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -32,13 +34,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 getAnalytics(app);
+const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
-const auth = getAuth(app);
 
 type AuthenticationContextType = {
   user: User | null;
-  login: () => Promise<void>;
+  token: string;
+  loginWithRedirect: () => Promise<void>;
+  loginWithPopup: () => Promise<void>;
   logout: () => void;
 };
 
@@ -52,46 +56,54 @@ export const AuthenticationContextProvider = ({
   children: ReactNode;
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState("");
+
+  const handleAuthResult = (result: UserCredential) => {
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    setToken(credential?.accessToken || "");
+
+    setUser(result.user);
+  };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        console.log("onAuthStateChanged currentUser present");
+        setUser(currentUser);
+      } else {
+        console.log("onAuthStateChanged currentUser not present");
+      }
     });
     return () => unsubscribe();
   }, []);
 
+  const handleRedirectSignIn = async () => {
+    const result = await getRedirectResult(auth);
+    if (result) handleAuthResult(result);
+  };
+
   useEffect(() => {
-    const handleRedirect = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-
-        console.log({result})
-        if (result) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential?.accessToken;
-          // The signed-in user info.
-          const user = result.user;
-
-          console.log({user})
-          setUser(user);
-        }
-      } catch (error) {
-        console.error("Error during sign-in redirect:", error);
-      }
-    };
-    handleRedirect();
+    handleRedirectSignIn();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const login = async () => {
+  const loginWithRedirect = async () => {
     await signInWithRedirect(auth, provider);
+  };
+
+  const loginWithPopup = async () => {
+    const result = await signInWithPopup(auth, provider);
+    handleAuthResult(result);
   };
 
   const logout = () => {
     auth.signOut();
+    setUser(null);
   };
   return (
-    <AuthenticationContext.Provider value={{ user, login, logout }}>
+    <AuthenticationContext.Provider
+      value={{ user, token, loginWithRedirect, loginWithPopup, logout }}
+    >
       {children}
     </AuthenticationContext.Provider>
   );
@@ -106,4 +118,10 @@ export const useAuthentication = () => {
     );
   }
   return context;
+};
+
+export const ProtectedComponet = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuthentication();
+
+  return user ? children : <Login />;
 };
