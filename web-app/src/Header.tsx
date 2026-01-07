@@ -15,10 +15,11 @@ export default function Header({
         <span className="text-4xl font-bold">Cloud Store</span>
       </div>
       <div className="flex flex-row gap-4">
-        <FileInput label={UPLOAD} onChange={onUpload} />
+        <FileInput label={UPLOAD} onChange={onUpload} title="Upload" />
         <button
           onClick={onRefresh}
-          className=" text-blue-500 cursor-pointer inline-flex items-center px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200 "
+          title="Refresh"
+          className=" text-blue-500 cursor-pointer inline-flex items-center px-3 py-2 bg-slate-100 text-lg font-bold rounded-lg hover:bg-slate-200 "
         >
           {REFRESH}
         </button>

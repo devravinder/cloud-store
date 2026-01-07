@@ -70,7 +70,7 @@ export default function DashBoard() {
   
 
   return (
-    <div className="p-8 flex flex-col gap-8">
+    <div className="p-4 sm:p-8 flex flex-col gap-8">
       <Header onUpload={uploadFile} onRefresh={loadFiles} />
       <ListView
         files={files}

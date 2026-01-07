@@ -1,4 +1,4 @@
-import { COPY } from './icons'
+import { COPY, VIEW } from './icons'
 
 export default function ContentPreview({content, onCopyContent}:{onCopyContent:VoidFunction, content: string}) {
   return (
@@ -16,7 +16,7 @@ export default function ContentPreview({content, onCopyContent}:{onCopyContent:V
             </div>
     
             <pre className="bg-black text-white max-h-72 overflow-auto rounded-lg p-4">
-              {content || "Select a file to view content"}
+              {content || `Clikck on ${VIEW} to see the data`}
             </pre>
           </div>
   )

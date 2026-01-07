@@ -3,9 +3,11 @@ import { LOADING } from "./icons";
 
 export default function FileInput({
   label,
+  title,
   onChange,
 }: {
   label: string;
+  title?: string
   onChange?: (files: FileList | null) => void;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -28,6 +30,7 @@ export default function FileInput({
     <button
       className="cursor-pointer text-blue-500 disabled:cursor-not-allowed inline-flex items-center px-3 py-2 bg-slate-100 text-sm font-medium rounded-lg hover:bg-slate-200"
       disabled={isOpening}
+      title={title}
       onClick={() => {
         setIsOpening(true);
         fileInputRef.current?.click();
