@@ -1,0 +1,12 @@
+node_modules
+.env
+dist
+.vercel
+.env*.local
+refer
+firebase-src
+*.log
+temp
+
+firebase-credentials.json
+.env.firebase

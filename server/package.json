@@ -1,0 +1,64 @@
+{
+  "name": "cloud-store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/startFirebase.js",
+  "type": "module",
+  "config": {
+    "source": "firebase-src",
+    "firebase_source": "firebase-src",
+    "firebase_env": ".env.firebase"
+  },
+  "scripts": {
+    "check": "echo $npm_package_source && echo $npm_package_config_firebase_source",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "dev": "tsx --no-warnings --env-file=.env --watch src/startLocal.ts",
+    "start": "node --no-warnings --env-file=.env dist/startLocal.js",
+    "remove:firebase_folder": "rm -rf $npm_package_config_firebase_source",
+    "create:firebase_folder": "mkdir -p $npm_package_config_firebase_source",
+    "copy:firebase-files": "cp package.json $npm_package_config_firebase_source && cp -r dist $npm_package_config_firebase_source",
+    "copy:local:envs": "cp $npm_package_config_firebase_env $npm_package_config_firebase_source/.env",
+    "prestart:firebase:functions": "npm run remove:firebase_folder && npm run create:firebase_folder && npm run build && npm run copy:firebase-files && npm run copy:local:envs",
+    "start:emulators": "npm run prestart:firebase:functions && firebase emulators:start",
+    "start:emulators:functions": "npm run prestart:firebase:functions && firebase emulators:start --only functions",
+    "start:emulators:storage": "firebase emulators:start --only storage",
+    "deploy": "firebase deploy",
+    "deploy:functions": "npm run prestart:firebase:functions && firebase deploy --only functions"
+  },
+  "directories": {
+    "serve": "public"
+  },
+  "files": [
+    "public",
+    "dist",
+    ".env.local",
+    ".env",
+    "dist/startFirebase.js"
+  ],
+  "engines": {
+    "node": "24"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.2",
+    "multer": "^2.0.2",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^25.0.3",
+    "@types/swagger-ui-express": "^4.1.8",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.26.2"
+}

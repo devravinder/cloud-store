@@ -1,0 +1,11 @@
+export const CLOSE = "⤫";
+export const DELETE = "🗑️";
+export const FOLDER = "📂";
+export const LOADING="⏳"
+export const UPLOAD="📤"
+export const REFRESH="⟲"
+export const COPY="📑"
+export const DOWNLOAD="📥"
+export const VIEW="👁"
+export const LINK="🔗"
+export const LOGOUT="➜]"
