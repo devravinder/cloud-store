@@ -16,6 +16,7 @@ router.get("/download/:id", async (req, res) => {
   const { stream, file } = await FileService.downloadFile(req.params.id!);
 
   res.contentType(file.mimeType);
+  res.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
   res.setHeader("Content-Disposition", `attachment; filename="${file.name}"`);
   stream.pipe(res);
 });

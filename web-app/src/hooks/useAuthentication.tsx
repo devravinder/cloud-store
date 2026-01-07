@@ -1,13 +1,10 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import {
-  getAuth,
-  signInWithRedirect,
-  signInWithPopup,
-  GoogleAuthProvider,
-  type User,
   getRedirectResult,
-  type UserCredential,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  type User,
+  type UserCredential
 } from "firebase/auth";
 import {
   createContext,
@@ -17,26 +14,8 @@ import {
   type ReactNode,
 } from "react";
 import Login from "../Login";
+import { auth, provider } from "../util/firebaseUtil";
 
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// project overview > settings > general > Your apps
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-getAnalytics(app);
-const auth = getAuth(app);
-
-const provider = new GoogleAuthProvider();
 
 type AuthenticationContextType = {
   user: User | null;

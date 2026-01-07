@@ -9,7 +9,7 @@ export default function Header({
   onRefresh: VoidFunction;
   onUpload: (files: FileList | null) => void;
 }) {
-  const { user, logout } = useAuthentication();
+  const { logout } = useAuthentication();
   return (
     <h1 className="flex flex-row justify-between items-center">
       <div className="inline-flex items-baseline gap-2">
@@ -32,11 +32,6 @@ export default function Header({
         >
           {LOGOUT}
         </button>
-        {user && (
-          <div className="flex gap-2 items-center">
-            <span>{user.displayName}</span>
-          </div>
-        )}
       </div>
     </h1>
   );
