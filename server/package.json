@@ -7,7 +7,7 @@
   "config": {
     "source": "firebase-src",
     "firebase_source": "firebase-src",
-    "firebase_env": ".env"
+    "firebase_env": ".env.firebase"
   },
   "scripts": {
     "check": "echo $npm_package_source && echo $npm_package_config_firebase_source",

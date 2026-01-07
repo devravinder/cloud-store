@@ -9,3 +9,4 @@ firebase-src
 temp
 
 firebase-credentials.json
+.env.firebase
