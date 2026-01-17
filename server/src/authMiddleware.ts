@@ -1,6 +1,6 @@
 // authMiddleware.ts
 import type { Request, Response, NextFunction } from "express";
-import admin, { type ServiceAccount, type AppOptions } from "firebase-admin";
+import admin from "firebase-admin";
 import { FirebaseConfig } from "./FirebaseConfig.js";
 import { AuthorizationError } from "./Errors.js";
 
