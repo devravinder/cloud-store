@@ -13,6 +13,22 @@ const router: Router = express();
 
 const db = getFirestore();
 
+
+const UPDATE_INFO_COLLECTION="update-info"
+
+const updateSyncInfo=async(collectionName: string, userId: string)=>{
+   const ref = db.collection(UPDATE_INFO_COLLECTION).doc(collectionName);
+
+    await ref.set(
+      {
+        collectionName,
+        userId,
+        updatedAt: new Date()
+      },
+      { merge: true } // 👈 UPSERT magic
+    );
+}
+
 router.get("/:collectionName", async (req: AuthRequest, res) => {
   const userId = req.user?.uid;
   const collectionName = req.params.collectionName!;
@@ -39,6 +55,8 @@ router.delete("/:collectionName", async (req: AuthRequest, res) => {
 
   await batch.commit();
 
+  await updateSyncInfo(collectionName, userId!)
+
   res.json("All docs deleted");
 });
 
@@ -54,7 +72,7 @@ router.post("/:collectionName", async (req: AuthRequest, res) => {
   const colRef = db.collection(collectionName);
 
   items.forEach((item) => {
-    const docRef = colRef.doc();
+    const docRef = colRef.doc(item.id);
 
     batch.set(docRef, {
       ...item,
@@ -63,6 +81,7 @@ router.post("/:collectionName", async (req: AuthRequest, res) => {
   });
 
   await batch.commit();
+  await updateSyncInfo(collectionName, userId!)
   res.json("Bulk insert success");
 });
 
