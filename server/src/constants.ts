@@ -14,5 +14,5 @@ export const IS_EMULATOR = Boolean(process.env.FIREBASE_STORAGE_EMULATOR_HOST);
 export const IS_LOCAL = process.env.APP_ENV==="LOCAL";
 
 
-export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+export const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 export const MAX_TOTAL_SIZE = 100 * 1024 * 1024; // 100MB
