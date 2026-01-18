@@ -86,16 +86,16 @@ router.delete("/:collectionName/:id", async (req: AuthRequest, res) => {
   res.json("doc deleted");
 });
 
-router.post("/:collectionName/upsert-single", async (req: AuthRequest, res) => {
+router.post("/:collectionName/:id", async (req: AuthRequest, res) => {
   const userId = req.user?.uid;
   const collectionName = req.params.collectionName!;
+  const id = req.params.id!;
+
   const item = req.body;
 
   if (!item) throw new ValidationError("Body must be present");
 
-  if (!item.id) throw new ValidationError("id must be present");
-
-  const docRef = db.collection(collectionName).doc(item.id);
+  const docRef = db.collection(collectionName).doc(id);
   docRef.set({ ...item, userId });
   await updateInfo(collectionName, userId!);
   res.json("upset success");
