@@ -26,7 +26,7 @@ const updateInfo = async (collectionName: string, userId: string) => {
     {
       collectionName,
       userId,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     },
     { merge: true } // 👈 UPSERT magic
   );
