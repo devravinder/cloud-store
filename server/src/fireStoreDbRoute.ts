@@ -17,7 +17,7 @@ const router: Router = express();
 
 const db = getFirestore();
 
-const UPDATE_INFO_COLLECTION = "update-info";
+const UPDATE_INFO_COLLECTION = "updateInfo";
 
 const updateInfo = async (collectionName: string, userId: string) => {
   const ref = db.collection(UPDATE_INFO_COLLECTION).doc(collectionName);
