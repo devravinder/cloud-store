@@ -14,6 +14,13 @@ declare global {
       FIREBASE_STORAGE_EMULATOR_HOST?: string
     }
   }
+
+  interface AppFile {
+    name: string
+    mimeType: string
+    size: number
+    path: string
+  }
 }
 
 export {};

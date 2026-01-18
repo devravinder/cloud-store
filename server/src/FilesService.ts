@@ -17,7 +17,7 @@ export interface FileMeta {
 const getTotalSize = (files: FileMeta[]) =>
   files.reduce((sum, f) => sum + f.size, 0);
 
-const saveFile = async (file: Express.Multer.File, fileId?: string) => {
+const saveFile = async (file: AppFile, fileId?: string) => {
   if (file.size > MAX_FILE_SIZE) {
     throw new MaxPayloadError("File exceeds 5MB limit");
   }
@@ -29,15 +29,15 @@ const saveFile = async (file: Express.Multer.File, fileId?: string) => {
     throw new MaxPayloadError("Total storage limit exceeded (100MB)");
   }
 
-  const id =  fileId || `${randomUUID()}${path.extname(file.originalname)}`;
+  const id =  fileId || `${randomUUID()}${path.extname(file.name)}`;
 
-  const mimeType = file.mimetype;
+  const mimeType = file.mimeType;
 
   const result = await fileStorageService.upload(file.path, id, mimeType);
 
   const meta: FileMeta = {
     id,
-    name: file.originalname,
+    name: file.name,
     mimeType,
     size: file.size,
     path: result.path,
@@ -51,7 +51,7 @@ const saveFile = async (file: Express.Multer.File, fileId?: string) => {
   return meta;
 };
 
-const updateFile = async (id: string, file: Express.Multer.File) => {
+const updateFile = async (id: string, file: AppFile) => {
 
   if (file.size > MAX_FILE_SIZE) {
     throw new MaxPayloadError("File exceeds 5MB limit");
@@ -64,13 +64,13 @@ const updateFile = async (id: string, file: Express.Multer.File) => {
     throw new MaxPayloadError("Total storage limit exceeded (100MB)");
   }
 
-  const mimeType = file.mimetype;
+  const mimeType = file.mimeType;
 
-  const result = await fileStorageService.upload(file.path, id, mimeType);
+  const result = await fileStorageService.upload(file.name, id, mimeType);
 
   const meta: Partial<FileMeta> = {
     id,
-    name: file.originalname,
+    name: file.name,
     mimeType,
     size: file.size,
     path: result.path,

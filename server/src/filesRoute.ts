@@ -1,17 +1,31 @@
 import express, { Router } from "express";
-import multer from "multer";
 import { FileService } from "./FilesService.js";
 import { NoFilePayloadError } from "./Errors.js";
+import uploadMiddleware, { type FileRequest } from "./uploadMiddleware.js";
+import * as fs from "fs";
 
-const upload = multer({ dest: "temp/" });
 const router: Router = express();
 
-router.post(["/upload", "/upload/:id"], upload.single("file"), async (req, res) => {
-  const id = req.params.id
-  if (!req.file) throw new NoFilePayloadError("No file uploaded");
-  const result = await FileService.saveFile(req.file, id);
-  res.json(result);
-});
+router.post(
+  ["/upload", "/upload/:id"],
+  uploadMiddleware,
+  async (req: FileRequest, res) => {
+    const id = req.params.id;
+
+    const file = req.files?.["file"]; // Match the key from frontend FormData
+
+    if (!file) throw new NoFilePayloadError("No file uploaded");
+
+    const appFile: AppFile = {
+      mimeType: file.mimetype,
+      path: file.filepath,
+      size: fs.statSync(file.filepath).size,
+      name: file.filename,
+    };
+    const result = await FileService.saveFile(appFile, id);
+    res.json(result);
+  }
+);
 
 router.get("/download/:id", async (req, res) => {
   const { stream, file } = await FileService.downloadFile(req.params.id!);
@@ -27,9 +41,19 @@ router.get("/content/:id", async (req, res) => {
   res.send(content);
 });
 
-router.put("/update/:id", upload.single("file"), async (req, res) => {
+router.put("/update/:id", uploadMiddleware, async (req:FileRequest, res) => {
   try {
-    const result = await FileService.updateFile(req.params.id!, req.file!);
+    const file = req.files?.["file"]; // Match the key from frontend FormData
+
+    if (!file) throw new NoFilePayloadError("No file uploaded");
+
+    const appFile: AppFile = {
+      mimeType: file.mimetype,
+      path: file.filepath,
+      size: fs.statSync(file.filepath).size,
+      name: file.filename,
+    };
+    const result = await FileService.updateFile(req.params.id!, appFile);
     res.json(result);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
