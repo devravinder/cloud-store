@@ -16,7 +16,7 @@ const db = getFirestore();
 
 const UPDATE_INFO_COLLECTION="update-info"
 
-const updateSyncInfo=async(collectionName: string, userId: string)=>{
+const updateInfo=async(collectionName: string, userId: string)=>{
    const ref = db.collection(UPDATE_INFO_COLLECTION).doc(collectionName);
 
     await ref.set(
@@ -55,11 +55,25 @@ router.delete("/:collectionName", async (req: AuthRequest, res) => {
 
   await batch.commit();
 
-  await updateSyncInfo(collectionName, userId!)
+  await updateInfo(collectionName, userId!)
 
   res.json("All docs deleted");
 });
 
+router.post("/:collectionName/insert-single", async (req: AuthRequest, res) => {
+  const userId = req.user?.uid;
+  const collectionName = req.params.collectionName!;
+  const item = req.body;
+
+  if (!item)
+    throw new ValidationError("Body must be present");
+
+  const colRef = db.collection(collectionName);
+  const docRef = colRef.doc(item.id)
+  docRef.set({...item, userId})
+  await updateInfo(collectionName, userId!)
+  res.json("insert success");
+});
 router.post("/:collectionName", async (req: AuthRequest, res) => {
   const userId = req.user?.uid;
   const collectionName = req.params.collectionName!;
@@ -81,7 +95,7 @@ router.post("/:collectionName", async (req: AuthRequest, res) => {
   });
 
   await batch.commit();
-  await updateSyncInfo(collectionName, userId!)
+  await updateInfo(collectionName, userId!)
   res.json("Bulk insert success");
 });
 
