@@ -17,7 +17,7 @@ export interface FileMeta {
 const getTotalSize = (files: FileMeta[]) =>
   files.reduce((sum, f) => sum + f.size, 0);
 
-const saveFile = async (file: Express.Multer.File) => {
+const saveFile = async (file: Express.Multer.File, fileId?: string) => {
   if (file.size > MAX_FILE_SIZE) {
     throw new MaxPayloadError("File exceeds 5MB limit");
   }
@@ -29,8 +29,7 @@ const saveFile = async (file: Express.Multer.File) => {
     throw new MaxPayloadError("Total storage limit exceeded (100MB)");
   }
 
-  const ext = path.extname(file.originalname);
-  const id = `${randomUUID()}${ext}`;
+  const id =  fileId || `${randomUUID()}${path.extname(file.originalname)}`;
 
   const mimeType = file.mimetype;
 

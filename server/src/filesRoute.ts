@@ -6,9 +6,10 @@ import { NoFilePayloadError } from "./Errors.js";
 const upload = multer({ dest: "temp/" });
 const router: Router = express();
 
-router.post("/upload", upload.single("file"), async (req, res) => {
+router.post("/upload/:id?", upload.single("file"), async (req, res) => {
+  const id = req.params.id
   if (!req.file) throw new NoFilePayloadError("No file uploaded");
-  const result = await FileService.saveFile(req.file);
+  const result = await FileService.saveFile(req.file, id);
   res.json(result);
 });
 
