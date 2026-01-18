@@ -96,9 +96,9 @@ router.post("/:collectionName/:id", async (req: AuthRequest, res) => {
   if (!item) throw new ValidationError("Body must be present");
 
   const docRef = db.collection(collectionName).doc(id);
-  docRef.set({ ...item, userId });
+  docRef.set({ ...item, userId }, { merge: true });
   await updateInfo(collectionName, userId!);
-  res.json("upset success");
+  res.json("upsert success");
 });
 router.post("/:collectionName", async (req: AuthRequest, res) => {
   const userId = req.user?.uid;
