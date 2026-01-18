@@ -1,7 +1,11 @@
 import express, { Router } from "express";
 import { getFirestore } from "firebase-admin/firestore";
 import type { AuthRequest } from "./authMiddleware.js";
-import { ValidationError } from "./Errors.js";
+import {
+  AuthorizationError,
+  NotFoundError,
+  ValidationError,
+} from "./Errors.js";
 
 /* 
 
@@ -13,21 +17,20 @@ const router: Router = express();
 
 const db = getFirestore();
 
+const UPDATE_INFO_COLLECTION = "update-info";
 
-const UPDATE_INFO_COLLECTION="update-info"
+const updateInfo = async (collectionName: string, userId: string) => {
+  const ref = db.collection(UPDATE_INFO_COLLECTION).doc(collectionName);
 
-const updateInfo=async(collectionName: string, userId: string)=>{
-   const ref = db.collection(UPDATE_INFO_COLLECTION).doc(collectionName);
-
-    await ref.set(
-      {
-        collectionName,
-        userId,
-        updatedAt: new Date()
-      },
-      { merge: true } // 👈 UPSERT magic
-    );
-}
+  await ref.set(
+    {
+      collectionName,
+      userId,
+      updatedAt: new Date(),
+    },
+    { merge: true } // 👈 UPSERT magic
+  );
+};
 
 router.get("/:collectionName", async (req: AuthRequest, res) => {
   const userId = req.user?.uid;
@@ -55,24 +58,47 @@ router.delete("/:collectionName", async (req: AuthRequest, res) => {
 
   await batch.commit();
 
-  await updateInfo(collectionName, userId!)
+  await updateInfo(collectionName, userId!);
 
   res.json("All docs deleted");
 });
 
-router.post("/:collectionName/insert-single", async (req: AuthRequest, res) => {
+router.delete("/:collectionName/:id", async (req: AuthRequest, res) => {
+  const userId = req.user?.uid;
+  const collectionName = req.params.collectionName!;
+  const id = req.params.id!;
+  const ref = db.collection(collectionName).doc(id);
+
+  // 1. Read doc
+  const snap = await ref.get();
+
+  if (!snap.exists) throw new NotFoundError("Not found " + id);
+
+  // 2. Check ownership
+  if (snap.data()!.userId !== userId)
+    throw new AuthorizationError("Not allowed");
+
+  // 3. Delete
+  await ref.delete();
+
+  await updateInfo(collectionName, userId!);
+
+  res.json("doc deleted");
+});
+
+router.post("/:collectionName/upsert-single", async (req: AuthRequest, res) => {
   const userId = req.user?.uid;
   const collectionName = req.params.collectionName!;
   const item = req.body;
 
-  if (!item)
-    throw new ValidationError("Body must be present");
+  if (!item) throw new ValidationError("Body must be present");
 
-  const colRef = db.collection(collectionName);
-  const docRef = colRef.doc(item.id)
-  docRef.set({...item, userId})
-  await updateInfo(collectionName, userId!)
-  res.json("insert success");
+  if (!item.id) throw new ValidationError("id must be present");
+
+  const docRef = db.collection(collectionName).doc(item.id);
+  docRef.set({ ...item, userId });
+  await updateInfo(collectionName, userId!);
+  res.json("upset success");
 });
 router.post("/:collectionName", async (req: AuthRequest, res) => {
   const userId = req.user?.uid;
@@ -95,7 +121,7 @@ router.post("/:collectionName", async (req: AuthRequest, res) => {
   });
 
   await batch.commit();
-  await updateInfo(collectionName, userId!)
+  await updateInfo(collectionName, userId!);
   res.json("Bulk insert success");
 });
 
