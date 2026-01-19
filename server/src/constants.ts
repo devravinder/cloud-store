@@ -15,4 +15,4 @@ export const IS_LOCAL = process.env.APP_ENV==="LOCAL";
 
 
 export const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
-export const MAX_TOTAL_SIZE = 100 * 1024 * 1024; // 100MB
+export const MAX_TOTAL_SIZE = 1000 * 1024 * 1024; // 1000MB

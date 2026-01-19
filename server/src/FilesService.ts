@@ -19,14 +19,14 @@ const getTotalSize = (files: FileMeta[]) =>
 
 const saveFile = async (file: AppFile, fileId?: string) => {
   if (file.size > MAX_FILE_SIZE) {
-    throw new MaxPayloadError("File exceeds 5MB limit");
+    throw new MaxPayloadError(`File exceeds limit (${MAX_FILE_SIZE} bites)`);
   }
 
   const files = await getFiles();
   const totalSize = getTotalSize(files);
 
   if (totalSize + file.size > MAX_TOTAL_SIZE) {
-    throw new MaxPayloadError("Total storage limit exceeded (100MB)");
+    throw new MaxPayloadError(`Total storage limit exceeded (${MAX_TOTAL_SIZE} bites)`);
   }
 
   const id =  fileId || `${randomUUID()}${path.extname(file.name)}`;
