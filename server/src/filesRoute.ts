@@ -6,6 +6,8 @@ import * as fs from "fs";
 
 const router: Router = express();
 
+const  safeName = (filename: string)=>filename.replace(/[^\w.-]/g, "_");
+
 router.post(
   ["/upload", "/upload/:id"],
   uploadMiddleware,
@@ -20,7 +22,7 @@ router.post(
       mimeType: file.mimetype,
       path: file.filepath,
       size: fs.statSync(file.filepath).size,
-      name: file.filename,
+      name: safeName(file.filename),
     };
     const result = await FileService.saveFile(appFile, id);
     res.json(result);
@@ -51,7 +53,7 @@ router.put("/update/:id", uploadMiddleware, async (req:FileRequest, res) => {
       mimeType: file.mimetype,
       path: file.filepath,
       size: fs.statSync(file.filepath).size,
-      name: file.filename,
+      name: safeName(file.filename),
     };
     const result = await FileService.updateFile(req.params.id!, appFile);
     res.json(result);
